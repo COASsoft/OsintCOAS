@@ -94,7 +94,53 @@ npm start
 
 ### Docker
 ```bash
-docker-compose up -d
+  🐳 Para usar Docker Compose:
+
+  1. Backend y Frontend: Se construyen desde los Dockerfiles locales
+  2. Nginx: nginx:alpine (imagen oficial)
+  3. Redis: redis:7-alpine (imagen oficial)
+
+  Requisitos previos:
+
+  - Docker instalado
+  - Docker Compose instalado
+  - Puerto 80, 3000, 3001 libres
+
+  Lo que habría que añadir:
+
+  1. nginx/nginx.conf - No existe, habría que crearlo
+  2. Los Dockerfiles del frontend - No se subió porque frontend está como submódulo (habría que construirlo)
+
+  # Construir y lanzar todo
+  docker-compose up --build
+
+  # Solo backend y frontend (sin nginx/redis)
+  docker-compose up backend frontend
+
+  # En background
+  docker-compose up -d
+
+  # Ver logs
+  docker-compose logs -f
+
+  # Parar todo
+  docker-compose down
+
+  **Servicios incluidos:**
+  - Backend (Node.js) - Puerto 3001
+  - Frontend (Next.js) - Puerto 3000
+  - Nginx (Proxy reverso) - Puerto 80 [Opcional]
+  - Redis (Caché) - Puerto 6379 [Opcional]
+
+  **Lanzar solo Backend + Frontend:**
+  ```bash
+  docker-compose up backend frontend
+
+  Lanzar stack completo:
+  # Nota: Requiere configurar nginx/nginx.conf
+  docker-compose up --build
+
+  Nota: Para desarrollo rápido, recomendamos usar la instalación local (./install.sh + ./start.sh). Docker es ideal para despliegues en producción.
 ```
 
 ## 📖 Uso

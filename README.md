@@ -3,6 +3,9 @@
 ## 🎯 Descripción
 Plataforma profesional de OSINT (Open Source Intelligence) con 34 herramientas especializadas para recopilar y analizar información de fuentes abiertas. Diseñada para investigadores de seguridad, analistas y profesionales de ciberseguridad.
 
+![image](https://github.com/user-attachments/assets/78b0119a-a21e-4fce-b7f2-f38c1a2e53be)
+
+
 ## ✨ Características Principales
 
 ### 🛠️ 34 Herramientas OSINT

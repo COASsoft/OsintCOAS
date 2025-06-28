@@ -51,10 +51,6 @@ temp/
 *.md
 !README.md
 
-# Claude files
-*.claude
-.claude/
-
 # Backup files
 *.backup
 *.bak

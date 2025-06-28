@@ -61,87 +61,84 @@ OsintCOAS/
 ### Requisitos Previos
 - Node.js ≥ 16.0.0
 - NPM ≥ 8.0.0
-- Git
+- Git (recomendado)
 
-### Instalación Rápida
+### 🌟 Instalación Completa (Recomendada)
+
+**Para equipos nuevos - Instala TODO desde cero:**
+
 ```bash
 # Clonar repositorio
 git clone https://github.com/COASsoft/OsintCOAS.git
-cd OsintCOAS
+cd OsintCOAS/fase2
 
-# Instalar dependencias
-cd fase2
+# Instalación completa (Infoooze + Plataforma Web)
+./install-complete.sh
+
+# Iniciar aplicación
+./start.sh
+```
+
+Este script instala:
+- ✅ Infoooze OSINT CLI (18 herramientas base)
+- ✅ Plataforma Web COAS (34 herramientas integradas)
+- ✅ Todas las dependencias necesarias
+- ✅ Scripts de control (start/stop)
+
+### 🔧 Instalación Solo Plataforma Web
+
+**Si ya tienes Infoooze instalado:**
+
+```bash
+# Solo la plataforma web
 ./install.sh
 
 # Iniciar aplicación
 ./start.sh
 ```
 
-### Instalación Manual
-```bash
-# Backend
-cd backend
-npm install
-npm run build
-npm start
+### 🐳 Instalación con Docker
 
-# Frontend (en otra terminal)
-cd frontend
-npm install
-npm run build
-npm start
+```bash
+# Solo backend y frontend
+docker-compose up backend frontend
+
+# Stack completo (requiere nginx.conf)
+docker-compose up --build
 ```
 
-### Docker
+### 📋 Verificación de Instalación
+
 ```bash
-  🐳 Para usar Docker Compose:
+# Probar que todo funciona
+./test-platform.sh
 
-  1. Backend y Frontend: Se construyen desde los Dockerfiles locales
-  2. Nginx: nginx:alpine (imagen oficial)
-  3. Redis: redis:7-alpine (imagen oficial)
-
-  Requisitos previos:
-
-  - Docker instalado
-  - Docker Compose instalado
-  - Puerto 80, 3000, 3001 libres
-
-  Lo que habría que añadir:
-
-  1. nginx/nginx.conf - No existe, habría que crearlo
-  2. Los Dockerfiles del frontend - No se subió porque frontend está como submódulo (habría que construirlo)
-
-  # Construir y lanzar todo
-  docker-compose up --build
-
-  # Solo backend y frontend (sin nginx/redis)
-  docker-compose up backend frontend
-
-  # En background
-  docker-compose up -d
-
-  # Ver logs
-  docker-compose logs -f
-
-  # Parar todo
-  docker-compose down
-
-  **Servicios incluidos:**
-  - Backend (Node.js) - Puerto 3001
-  - Frontend (Next.js) - Puerto 3000
-  - Nginx (Proxy reverso) - Puerto 80 [Opcional]
-  - Redis (Caché) - Puerto 6379 [Opcional]
-
-  **Lanzar solo Backend + Frontend:**
-  ```bash
-  docker-compose up backend frontend
-
-  Lanzar stack completo:
-  # Nota: Requiere configurar nginx/nginx.conf
-  docker-compose up --build
-
-  Nota: Para desarrollo rápido, recomendamos usar la instalación local (./install.sh + ./start.sh). Docker es ideal para despliegues en producción.
+# Verificar Infoooze manualmente
+infoooze -h
+infoooze -w example.com
 ```
+
+### 🐳 Información adicional sobre Docker
+
+**Servicios incluidos en docker-compose.yml:**
+- Backend (Node.js) - Puerto 3001
+- Frontend (Next.js) - Puerto 3000  
+- Nginx (Proxy reverso) - Puerto 80 [Opcional]
+- Redis (Caché) - Puerto 6379 [Opcional]
+
+**Comandos Docker útiles:**
+```bash
+# Solo backend y frontend (recomendado)
+docker-compose up backend frontend
+
+# Ver logs
+docker-compose logs -f
+
+# Parar todo
+docker-compose down
+```
+
+**Nota**: Para desarrollo rápido, recomendamos usar la instalación local (`./install-complete.sh + ./start.sh`). Docker es ideal para despliegues en producción.
 
 ## 📖 Uso
 
@@ -213,6 +210,9 @@ fetch('http://localhost:3001/api/osint/execute', {
 ## 🧪 Testing
 
 ```bash
+# Prueba rápida de la plataforma
+./test-platform.sh
+
 # Tests del backend
 cd backend
 npm test
@@ -220,6 +220,77 @@ npm test
 # Tests de la API
 cd qa
 ./run-all-tests.sh
+
+# Pruebas manuales de Infoooze
+infoooze -h
+infoooze -w google.com
+infoooze -p 8.8.8.8
+```
+
+## 🚨 Solución de Problemas
+
+### Problemas Comunes
+
+#### 1. "infoooze command not found"
+```bash
+# Instalar Infoooze
+npm install -g infoooze
+
+# O usar instalación completa
+./install-complete.sh
+```
+
+#### 2. "Frontend failed to start"
+```bash
+# Reinstalar dependencias del frontend
+cd frontend
+rm -rf node_modules package-lock.json
+npm install
+npm run build
+```
+
+#### 3. "Backend API not responding"
+```bash
+# Verificar que el puerto 3001 esté libre
+lsof -i :3001
+kill -9 <PID>
+
+# Reiniciar backend
+./stop.sh
+./start.sh
+```
+
+#### 4. "Permission denied" en scripts
+```bash
+# Dar permisos de ejecución
+chmod +x *.sh
+chmod +x qa/*.sh
+```
+
+### Comandos Útiles
+
+```bash
+# Control de la plataforma
+./start.sh              # Iniciar todo
+./stop.sh               # Detener todo
+./test-platform.sh      # Probar funcionamiento
+
+# Ver logs en tiempo real
+tail -f backend.log
+tail -f frontend.log
+
+# Estado de procesos
+ps aux | grep node
+
+# Verificar puertos
+lsof -i :3000
+lsof -i :3001
+
+# Limpiar instalación
+./stop.sh
+rm -rf frontend/node_modules
+rm -rf backend/node_modules
+./install-complete.sh
 ```
 
 ## 📈 Rendimiento

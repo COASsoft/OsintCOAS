@@ -44,15 +44,15 @@ if command -v node &> /dev/null; then
     NODE_VERSION=$(node -v | cut -d'v' -f2)
     print_success "Node.js installed (v$NODE_VERSION)"
     
-    # Check if version is 18 or higher
-    REQUIRED_VERSION=18
+    # Check if version is 16 or higher (lowered for compatibility)
+    REQUIRED_VERSION=16
     CURRENT_VERSION=$(echo $NODE_VERSION | cut -d'.' -f1)
     if [ $CURRENT_VERSION -lt $REQUIRED_VERSION ]; then
-        print_error "Node.js version must be 18 or higher. Current: v$NODE_VERSION"
+        print_error "Node.js version must be 16 or higher. Current: v$NODE_VERSION"
         exit 1
     fi
 else
-    print_error "Node.js is not installed. Please install Node.js 18+ first."
+    print_error "Node.js is not installed. Please install Node.js 16+ first."
     echo "Visit: https://nodejs.org/"
     exit 1
 fi
@@ -71,6 +71,26 @@ if command -v git &> /dev/null; then
     print_success "Git installed"
 else
     print_info "Git not installed (optional)"
+fi
+
+# Check Infoooze OSINT Tool
+echo ""
+echo "📋 Checking Infoooze OSINT tool..."
+if command -v infoooze &> /dev/null; then
+    INFOOOZE_VERSION=$(infoooze --version 2>/dev/null || echo "installed")
+    print_success "Infoooze OSINT tool found (version: $INFOOOZE_VERSION)"
+else
+    print_error "Infoooze OSINT tool is not installed"
+    echo ""
+    echo "⚠️  This platform requires Infoooze to function properly."
+    echo ""
+    echo "To install everything (Infoooze + Platform), run:"
+    echo "   ./install-complete.sh"
+    echo ""
+    echo "Or install Infoooze manually:"
+    echo "   npm install -g infoooze"
+    echo ""
+    exit 1
 fi
 
 echo ""
